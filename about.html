@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SYSTEM_USER_ABOUT</title>
+    <style>
+        /* 1. FONT REGISTRATION */
+        @font-face {
+            font-family: 'EurostileCustom';
+            src: url('EurostileLTStd-BoldEx2.otf');
+        }
+
+        @font-face {
+            font-family: 'R3Symbols';
+            src: url('r3_symbols.ttf') format('truetype'); 
+        }
+
+        @font-face {
+            font-family: 'CourierCustom';
+            src: url('cour.ttf') format('truetype');
+        }
+
+        /* 2. GLOBAL CURSOR & SELECTION */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: url('cursor.cur'), auto; 
+        }
+
+        h1, p, span, div {
+            cursor: url('cursor.cur'), text;
+        }
+
+        ::selection {
+            background: #ff0055;
+            color: #fff;
+        }
+
+        /* 3. MATCHING BACKGROUND PROTOCOLS */
+        body {
+            background-image: 
+                linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,1) 85%), 
+                url('bg.png'); 
+            background-size: 100% auto;
+            background-position: top center;
+            background-attachment: scroll;
+            background-repeat: no-repeat;
+            background-color: #000;
+            color: #fff;
+            font-family: 'Consolas', 'Courier New', monospace;
+            padding: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* 4. TERMINAL CONTAINER STYLES */
+        .terminal-container {
+            width: 750px;
+            max-width: 95%;
+            border: 2px solid #ff0055;
+            box-shadow: 0px 0px 30px rgba(255, 0, 85, 0.25);
+            background: rgba(0, 0, 0, 0.95); 
+            border-radius: 8px;
+            overflow: hidden;
+            margin: 40px auto;
+        }
+
+        .terminal-bar {
+            background-color: #ff0055;
+            color: #000;
+            padding: 8px 15px;
+            font-family: 'EurostileCustom', sans-serif;
+            font-weight: bold;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .terminal-body {
+            padding: 25px;
+            font-size: 1rem;
+            line-height: 1.8;
+            text-align: left;
+        }
+
+        .text-green { color: #00ffcc; }
+        .text-pink { color: #ff0055; }
+        
+        .section-title {
+            font-family: 'EurostileCustom', sans-serif;
+            color: #00ffcc;
+            margin-top: 25px;
+            margin-bottom: 12px;
+            border-bottom: 1px dashed rgba(0, 255, 204, 0.3);
+            padding-bottom: 3px;
+            letter-spacing: 1px;
+        }
+
+        /* PROFILE LAYOUT MODULE - FIXED FOR PERFECT CIRCLE */
+        .profile-wrapper {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .avatar-frame {
+            width: 110px;         /* Uniform width and height keeps it perfectly circular */
+            height: 110px;
+            border: 2px solid #00ffcc;
+            box-shadow: 0 0 15px rgba(0, 255, 204, 0.2);
+            background: #111;
+            border-radius: 50%;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .avatar-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-info {
+            flex: 1;
+        }
+
+        /* 5. OPTIMIZED R3 GAME DATABASE GRID ENGINE */
+        .game-row {
+            display: flex;
+            align-items: center;      
+            gap: 15px;
+            margin-bottom: 10px;
+            min-height: 40px;         
+        }
+
+        .r3-icon {
+            font-family: 'R3Symbols', sans-serif;
+            color: #ff0055;
+            font-size: 1.2rem;        
+            line-height: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-shadow: 0 0 10px rgba(255, 0, 85, 0.5);
+            width: auto;              
+            font-style: normal;
+            speak: none;
+            position: relative;
+            top: -20px;
+        }
+
+        .r3-icon-normal {
+            font-family: 'R3Symbols', sans-serif !important;
+            color: #00ffcc;           
+            font-size: 0.85rem;        
+            line-height: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-shadow: 0 0 8px rgba(0, 255, 204, 0.4);
+            width: auto;
+            font-style: normal;
+            speak: none;
+            position: relative;
+            top: 0px;                  
+            margin-right: 6px;             
+        }
+
+        .dev-credits {
+            display: flex;
+            align-items: center;       
+            gap: 8px;
+            margin-top: -5px; 
+            margin-bottom: 15px;
+        }
+
+        .game-title {
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 1rem;
+            color: #fff;
+        }
+
+        /* VE-MATRIX GRAPHICS CORE */
+        .garage-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+            margin: 15px 0 20px 25px;
+        }
+
+        .vehicle-card {
+            background: rgba(255, 0, 85, 0.03);
+            border: 1px solid rgba(255, 0, 85, 0.2);
+            padding: 8px;
+            border-radius: 4px;
+            text-align: center;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .vehicle-card:hover {
+            border-color: #00ffcc;
+            background: rgba(0, 255, 204, 0.05);
+            box-shadow: 0 0 10px rgba(0, 255, 204, 0.15);
+        }
+
+        .vehicle-thumb-box {
+            width: 100%;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin-bottom: 6px;
+        }
+
+        .vehicle-thumb {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 0 4px rgba(0,0,0,0.6));
+        }
+
+        .vehicle-name {
+            font-size: 0.75rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .vehicle-card:hover .vehicle-name {
+            color: #00ffcc;
+        }
+
+        /* 6. NAVIGATION DECKS */
+        .back-btn {
+            display: inline-block;
+            margin-top: 30px;
+            color: #00ffcc;
+            text-decoration: none !important;
+            border: 2px solid #00ffcc;
+            padding: 10px 20px;
+            font-family: 'EurostileCustom', sans-serif;
+            font-weight: bold;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: 0.2s ease-in-out;
+        }
+
+        .back-btn:hover {
+            background-color: #00ffcc;
+            color: #000;
+            transform: scale(1.05) skewX(-5deg);
+            box-shadow: 0px 0px 15px #00ffcc;
+            cursor: url('hover.cur'), pointer;
+        }
+
+        .loading-line {
+            width: 100%;
+            height: 2px;
+            background-color: #ff0055;
+            margin-bottom: 15px;
+            animation: load 1.5s ease-out forwards;
+            transform-origin: left;
+        }
+
+        @keyframes load {
+            0% { transform: scaleX(0); }
+            100% { transform: scaleX(1); }
+        }
+
+        /* EASTER EGG FULL-SCREEN MOJIBAKE OVERLAY */
+        #corrupted-screen {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: #000;
+            padding: 20px;
+            overflow: hidden;
+            word-break: break-all;
+            z-index: 9999;
+            line-height: 1.3;
+        }
+
+        /* COURIER LAYER: Standard Diagnostic Frame Elements */
+        .glitch-normal {
+            font-family: 'CourierCustom', monospace;
+            color: #ffffff;
+            font-size: 1.1rem;
+        }
+
+        /* ENGINE SYMBOL LAYER: Extracted Core Symbols */
+        .glitch-symbol {
+            font-family: 'R3Symbols', sans-serif !important;
+            color: #00ffcc;
+            font-size: 1.3rem;
+            text-shadow: 0 0 8px rgba(0, 255, 204, 0.6);
+        }
+        
+        .secret-trigger {
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+        }
+        
+        .secret-trigger:hover {
+            opacity: 0.9 !important;
+            border-color: #00ffcc !important;
+            filter: drop-shadow(0 0 8px #ff0055);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="terminal-container">
+        <div class="terminal-bar">
+            <span>SECURE_DATA_NODE // USER_BIO</span>
+            <span>v5.5</span>
+        </div>
+        <div class="terminal-body">
+            <div class="loading-line"></div>
+            
+            <p><span class="text-pink">></span> LOADING CORE PROFILE...</p>
+            <p><span class="text-green">[SUCCESS]</span> USER LOG IN AS: <span class="text-pink">kev8726</span></p>
+            
+            <div class="section-title">IDENTIFICATION</div>
+            <div class="profile-wrapper">
+                <div class="avatar-frame">
+                    <img src="discord_pfp.png" class="avatar-img" alt="[AVATAR]">
+                </div>
+                <div class="profile-info">
+                    <p><span class="text-pink">></span> NAME: Kevin</p>
+                    <p><span class="text-pink">></span> ACCESS_LEVEL: Root Admin</p>
+                    <p><span class="text-pink">></span> HARDWARE: Desktop Mainframe / Custom Audio Deck</p>
+                    <p><span class="text-pink">></span> LINKED_COMMS: <span class="text-green">samsung.png</span> [ACTIVE]</p>
+                </div>
+            </div>
+
+            <div class="section-title">SOFTWARE_DATABASE // GAMES_PLAYED</div>
+				
+            <div>
+                <div class="game-row" style="margin-bottom: 0;">
+                    <span class="r3-icon">2</span>
+                    <span class="game-title">Real Racing 3 (Asset Extracted Core)</span>
+                </div>
+                <div class="dev-credits" style="padding-left: 5px;">
+                    <span style="color: #ff0055; margin-right: 2px; font-weight: bold; display: inline-flex; align-items: center;">┗></span>
+                    <span class="r3-icon-normal">1</span> 
+                    <span class="r3-icon-normal">0</span> 
+                    <span style="font-size: 0.85rem; color: #888; font-family: 'Consolas', monospace; display: inline-flex; align-items: center; line-height: 1;">Developed by Firemonkeys & Published by Electronic Arts</span>
+                </div>
+
+                <div style="padding-left: 20px; font-size: 0.85rem; color: #ff0055;">┗> [GARAGE_STORAGE] // EXTRACTED_VEHICLES:</div>
+                <div class="garage-grid">
+                    <div class="vehicle-card">
+                        <div class="vehicle-thumb-box"><img src="lancer.png" class="vehicle-thumb"></div>
+                        <div class="vehicle-name">Lancer Evo Spec</div>
+                    </div>
+                    <div class="vehicle-card">
+                        <div class="vehicle-thumb-box"><img src="impreza 22b.png" class="vehicle-thumb"></div>
+                        <div class="vehicle-name">Impreza 22B</div>
+                    </div>
+                    <div class="vehicle-card">
+                        <div class="vehicle-thumb-box"><img src="integra2.png" class="vehicle-thumb"></div>
+                        <div class="vehicle-name">Integra R (Front)</div>
+                    </div>
+                    <div class="vehicle-card">
+                        <div class="vehicle-thumb-box"><img src="integra.png" class="vehicle-thumb"></div>
+                        <div class="vehicle-name">Integra R (Side)</div>
+                    </div>
+                    <div class="vehicle-card">
+                        <div class="vehicle-thumb-box"><img src="rolla.png" class="vehicle-thumb"></div>
+                        <div class="vehicle-name">AE92 Corolla</div>
+                    </div>
+                   
+                    <div class="vehicle-card">
+                        <div class="vehicle-thumb-box"><img src="4runner.png" class="vehicle-thumb"></div>
+                        <div class="vehicle-name">Toyota 4Runner</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="game-row">
+                <span class="text-green" style="font-size: 1rem; width: auto; margin-left: 2px;">[+]</span>
+                <span class="game-title">Other Title 01</span>
+            </div>
+            
+            <div class="game-row">
+                <span class="text-green" style="font-size: 1rem; width: auto; margin-left: 2px;">[+]</span>
+                <span class="game-title">Other Title 02</span>
+            </div>
+
+            <div class="section-title">THE TRANSMISSION</div>
+            <p>Welcome to my corner of the web. I build layouts, mess around with retro-futuristic styling scripts, and compile custom audio logs. This interface serves as a centralized network node for current active code directories and web assets.</p>
+
+            <div class="section-title">SECTOR_LOGS</div>
+            <p><span class="text-green">[+]</span> HTML / CSS Custom Architecture</p>
+            <p><span class="text-green">[+]</span> Audio Signal Extraction & Resampling</p>
+            <p><span class="text-green">[+]</span> Interface Design Protocols</p>
+
+            <div style="margin-top: 25px; display: flex; align-items: center; gap: 10px;">
+                <span style="color: #ff0055; font-size: 0.9rem;">[!] UNLINKED_RAW_NODE:</span>
+                <img src="random_female.png" class="secret-trigger" id="glitchBtn" style="width: 35px; height: auto; opacity: 0.25; border: 1px dashed #ff0055; padding: 2px;" title="CRITICAL_DATA_ERR">
+            </div>
+
+            <a href="a.html" class="back-btn">&lt;&lt; return_to_hub.exe</a>
+        </div>
+    </div>
+
+    <div id="corrupted-screen"></div>
+
+    <script>
+        const glitchBtn = document.getElementById('glitchBtn');
+        const corruptedScreen = document.getElementById('corrupted-screen');
+
+        glitchBtn.addEventListener('click', () => {
+            corruptedScreen.style.display = 'block';
+            
+            // Pool 1: Courier plain system arrays
+            const normalChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_SYSTEM_FAILURE_DATA_OVERFLOW_CORE_";
+            
+            // Pool 2: The raw unhinged symbols from r3_symbols
+            const symbolChars = "縺繧ｿ繧､繝退Ν鬟ｼ0123456789";
+
+            setInterval(() => {
+                let htmlChunk = "";
+                
+                // Generates chunks of text with varying styles per character
+                for (let i = 0; i < 150; i++) {
+                    if (Math.random() > 0.5) {
+                        let char = normalChars.charAt(Math.floor(Math.random() * normalChars.length));
+                        htmlChunk += `<span class="glitch-normal">${char}</span>`;
+                    } else {
+                        let char = symbolChars.charAt(Math.floor(Math.random() * symbolChars.length));
+                        htmlChunk += `<span class="glitch-symbol">${char}</span>`;
+                    }
+                }
+                
+                // Injected via innerHTML to allow custom font span wrappers to process
+                corruptedScreen.innerHTML += htmlChunk;
+                
+                // Direct container pin-scroll down framework
+                corruptedScreen.scrollTop = corruptedScreen.scrollHeight;
+            }, 30);
+        });
+
+        // Hitting Escape clears the buffer and brings you right back to your panel
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                corruptedScreen.style.display = 'none';
+                corruptedScreen.innerHTML = '';
+            }
+        });
+    </script>
+
+</body>
+</html>

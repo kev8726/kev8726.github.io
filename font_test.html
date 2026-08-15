@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>FONT_MATRIX_TEST</title>
+    <style>
+        @font-face {
+            font-family: 'R3Symbols';
+            src: url('r3_symbols.ttf'); /* Change to .ttf if your file is .ttf */
+        }
+
+        body {
+            background-color: #0a0a0a;
+            color: #fff;
+            font-family: 'Consolas', 'Courier New', monospace;
+            padding: 40px;
+        }
+
+        .matrix-box {
+            background: rgba(0, 0, 0, 0.9);
+            border: 2px solid #00ffcc;
+            padding: 25px;
+            border-radius: 6px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .label {
+            color: #ff0055;
+            font-weight: bold;
+            margin-top: 20px;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+        }
+
+        /* This renders the custom game icons */
+        .r3-icon {
+            font-family: 'R3Symbols', sans-serif;
+            color: #00ffcc;
+            font-size: 2.5rem;
+            letter-spacing: 15px;
+            display: block;
+            background: #111;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            word-break: break-all;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="matrix-box">
+        <h2 style="color: #00ffcc; margin-bottom: 20px;">[R3_SYMBOLS_DECODER]</h2>
+        <p>Compare the icons in the green boxes to the standard keys listed below them to find your match.</p>
+
+        <div class="label">LOWERCASE LETTERS:</div>
+        <div class="r3-icon">abcdefghijklmnopqrstuvwxyz</div>
+        <div style="letter-spacing: 15px; padding-left: 15px; opacity: 0.5;">abcdefghijklmnopqrstuvwxyz</div>
+
+        <div class="label">UPPERCASE LETTERS:</div>
+        <div class="r3-icon">ABCDEFGHIJKLMNOPQRSTUVWXYZ</div>
+        <div style="letter-spacing: 15px; padding-left: 15px; opacity: 0.5;">ABCDEFGHIJKLMNOPQRSTUVWXYZ</div>
+
+        <div class="label">NUMBERS & SYMBOLS:</div>
+        <div class="r3-icon">0123456789 +-=/\|_!@#$%^&*()[]{}</div>
+        <div style="letter-spacing: 15px; padding-left: 15px; opacity: 0.5; word-break: break-all;">0123456789 +-=/\|_!@#$%^&*()[]{}</div>
+    </div>
+
+</body>
+</html>
